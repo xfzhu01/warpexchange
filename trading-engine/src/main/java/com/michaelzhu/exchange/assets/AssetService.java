@@ -36,6 +36,35 @@ public class AssetService extends LoggerSupport {
         return zeroAsset;
     }
 
+    public void transfer(Transfer type, Long fromUserId, Long toUserId, AssetEnum assetId, BigDecimal amount) {
+        if (!tryTransfer(type, fromUserId, toUserId, assetId, amount, true)) {
+            throw new RuntimeException("Transfer failed for " + type + ", from user " + fromUserId + " to user " + toUserId
+                    + ", asset = " + assetId + ", amount = " + amount);
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("transfer asset {} from {} => {}, amount {}", assetId, fromUserId, toUserId, amount);
+        }
+    }
+
+    public boolean tryFreeze(Long userId, AssetEnum assetId, BigDecimal amount) {
+        boolean ok = tryTransfer(Transfer.AVAILABLE_TO_FROZEN, userId, userId, assetId, amount, true);
+        if (ok && logger.isDebugEnabled()) {
+            logger.debug("freezed user {}, asset {}, amount {}", userId, assetId, amount);
+        }
+        return ok;
+    }
+
+    public void unfreeze(Long userId, AssetEnum assetId, BigDecimal amount) {
+        if (!tryTransfer(Transfer.FROZEN_TO_AVAILABLE, userId, userId, assetId, amount, true)) {
+            throw new RuntimeException(
+                    "Unfreeze failed for user " + userId + ", asset = " + assetId + ", amount = " + amount);
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("unfreezed user {}, asset {}, amount {}", userId, assetId, amount);
+        }
+    }
+
+
     public boolean tryTransfer(Transfer type, Long fromUserId, Long toUserId, AssetEnum assetId, BigDecimal amount, boolean checkBalance) {
         if (amount.signum() <= 0) {
             throw new IllegalArgumentException("amount must be greater than zero");
