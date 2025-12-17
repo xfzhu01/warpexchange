@@ -43,7 +43,42 @@ public class AssetService extends LoggerSupport {
 
         Asset fromAsset = getAsset(fromUserId, assetId);
         if (fromAsset == null) {
-
+            fromAsset = initAsset(fromUserId, assetId);
         }
+
+        Asset toAsset = getAsset(toUserId, assetId);
+        if (toAsset == null) {
+            toAsset = initAsset(toUserId, assetId);
+        }
+
+        return switch (type) {
+            case AVAILABLE_TO_AVAILABLE -> {
+                if (checkBalance && fromAsset.available.compareTo(amount) < 0) {
+                    yield false;
+                }
+                fromAsset.available = fromAsset.available.subtract(amount);
+                toAsset.available = toAsset.available.add(amount);
+                yield true;
+            }
+            case AVAILABLE_TO_FROZEN -> {
+                if (checkBalance && fromAsset.available.compareTo(amount) < 0) {
+                    yield false;
+                }
+                fromAsset.available = fromAsset.available.subtract(amount);
+                toAsset.frozen = toAsset.frozen.add(amount);
+                yield true;
+            }
+            case FROZEN_TO_AVAILABLE -> {
+                if (checkBalance && fromAsset.frozen.compareTo(amount) < 0) {
+                    yield false;
+                }
+                fromAsset.frozen = fromAsset.frozen.subtract(amount);
+                toAsset.available = toAsset.available.add(amount);
+                yield true;
+            }
+            default -> {
+                throw new IllegalArgumentException("invalid type: " + type);
+            }
+        };
     }
 }
