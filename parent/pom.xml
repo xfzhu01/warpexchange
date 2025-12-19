@@ -26,12 +26,24 @@
 
         <pebble.version>3.2.0</pebble.version>
         <springcloud.version>2022.0.0</springcloud.version>
+        <springboot.version>3.1.12</springboot.version>
         <springdoc.version>2.0.0</springdoc.version>
         <vertx.version>4.3.1</vertx.version>
+        <mysql.version>8.3.0</mysql.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot BOM -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud BOM（推荐方式） -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
