@@ -29,8 +29,10 @@ public class TickEntity implements EntitySupport {
     @Column(nullable = false, updatable = false, precision = PRECISION, scale = SCALE)
     public BigDecimal price;
 
+    @Column(nullable = false, updatable = false, precision = PRECISION, scale = SCALE)
     public BigDecimal quantity;
 
+    @Column(nullable = false, updatable = false)
     public long createdAt;
 
     public String toJson() {
