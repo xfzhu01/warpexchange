@@ -88,4 +88,14 @@ public class MatchEngine {
         return new OrderBookBean(this.sequenceId, this.marketPrice, this.buyBook.getOrderBook(maxDepth),
                 this.sellBook.getOrderBook(maxDepth));
     }
+
+    public void debug() {
+        System.out.println("---------- match engine ----------");
+        System.out.println(this.sellBook);
+        System.out.println("  ----------");
+        System.out.println("  " + this.marketPrice);
+        System.out.println("  ----------");
+        System.out.println(this.buyBook);
+        System.out.println("---------- // match engine ----------");
+    }
 }

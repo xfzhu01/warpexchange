@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -86,5 +89,17 @@ public class OrderService {
 
     public ConcurrentMap<Long, OrderEntity> getUserOrders(Long userId) {
         return this.userOrders.get(userId);
+    }
+
+    public void debug() {
+        System.out.println("---------- orders ----------");
+        List<OrderEntity> orders = new ArrayList<>(this.activeOrders.values());
+        Collections.sort(orders);
+        for (OrderEntity order : orders) {
+            System.out.println("  " + order.id + " " + order.direction + " price: " + order.price + " unfilled: "
+                    + order.unfilledQuantity + " quantity: " + order.quantity + " sequenceId: " + order.sequenceId
+                    + " userId: " + order.userId);
+        }
+        System.out.println("---------- // orders ----------");
     }
 }
