@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
+import com.michaelzhu.exchange.enums.BarType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -156,6 +157,8 @@ public class JsonUtil {
     /**
      * A special map to JSON that using string builder.
      *
+     * @param map
+     * @return
      */
     public static String buildJsonFromJsonMap(Map<String, String> stringJsonMap) {
         if (stringJsonMap.isEmpty()) {
