@@ -103,7 +103,7 @@ public class MvcController extends LoggerSupport {
         name = name.strip();
         // check password:
         if (password == null || password.length() < 8 || password.length() > 32) {
-            return prepareModelAndView("signup", Map.of("email", email, "name", name, "error", "Invalid password."));
+            return prepareModelAndView("signup", Map.of("email", email, "name", name, "error", "Password length must be between 8 and 32 characters."));
         }
         doSignup(email, name, password);
         return redirect("/signin");
